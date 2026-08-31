@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        YOLO Model Comparison
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/comparison.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="comparison-header">
+
+    <div>
+
+        <h1>
+            YOLO Model Comparison
+        </h1>
+
+        <p>
+            Compare YOLOv8n and YOLOv8s
+        </p>
+
+    </div>
+
+
+    <a
+        href="/"
+        class="back-button"
+    >
+        ← Main Dashboard
+    </a>
+
+</header>
+
+
+
+<main class="comparison-container">
+
+
+    <!-- MODEL SELECTION -->
+
+    <section class="model-selector">
+
+        <h2>
+            Select Models
+        </h2>
+
+
+        <div class="selector-grid">
+
+
+            <div class="selector-card">
+
+                <label for="leftModel">
+                    Main Model
+                </label>
+
+                <select id="leftModel">
+
+                    <option value="yolov8n">
+                        YOLOv8n
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="selector-card">
+
+                <label for="rightModel">
+                    Comparison Model
+                </label>
+
+                <select id="rightModel">
+
+                    <option value="yolov8s">
+                        YOLOv8s
+                    </option>
+
+                    <option value="yolov8n">
+                        YOLOv8n
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- INPUT -->
+
+    <section class="input-section">
+
+        <h2>
+            Test Same Image
+        </h2>
+
+        <p>
+            Upload one image and run both models
+            on the same image.
+        </p>
+
+
+        <label
+            for="comparisonImage"
+            class="upload-button"
+        >
+
+            📁 Choose Image
+
+        </label>
+
+
+        <input
+            type="file"
+            id="comparisonImage"
+            accept="image/*"
+            hidden
+        >
+
+
+        <button
+            id="compareButton"
+            class="compare-button"
+            disabled
+        >
+
+            ⚖️ Compare Models
+
+        </button>
+
+    </section>
+
+
+
+    <!-- RESULTS -->
+
+    <section class="results-section">
+
+        <div class="model-result">
+
+
+            <div class="model-title">
+
+                <h2>
+                    YOLOv8n
+                </h2>
+
+                <span class="main-badge">
+                    MAIN MODEL
+                </span>
+
+            </div>
+
+
+            <div
+                id="resultN"
+                class="result-box"
+            >
+
+                <p>
+                    Waiting for image...
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="model-result">
+
+
+            <div class="model-title">
+
+                <h2>
+                    YOLOv8s
+                </h2>
+
+                <span class="comparison-badge">
+                    COMPARISON
+                </span>
+
+            </div>
+
+
+            <div
+                id="resultS"
+                class="result-box"
+            >
+
+                <p>
+                    Waiting for image...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- COMPARISON SUMMARY -->
+
+    <section
+        id="summary"
+        class="summary-section"
+    >
+
+        <h2>
+            Comparison Summary
+        </h2>
+
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <span>
+                    YOLOv8n Inference
+                </span>
+
+                <strong id="timeN">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    YOLOv8s Inference
+                </span>
+
+                <strong id="timeS">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    YOLOv8n Objects
+                </span>
+
+                <strong id="countN">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    YOLOv8s Objects
+                </span>
+
+                <strong id="countS">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="winner"
+            class="winner"
+        >
+
+            Run a comparison to see the result.
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<script
+    src="{{ url_for('static', filename='js/comparison.js') }}"
+></script>
+
+
+</body>
+
+</html>

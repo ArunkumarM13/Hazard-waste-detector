@@ -1,0 +1,49 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# NDA DATASET
+dataset/
+datasets/
+data/
+
+# Images and videos
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.webp
+*.gif
+*.mp4
+*.avi
+*.mov
+
+# YOLO model weights
+*.pt
+*.pth
+*.onnx
+
+# YOLO training results
+runs/
+weights/
+
+# Cache / logs
+*.cache
+*.log
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

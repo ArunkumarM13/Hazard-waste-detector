@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Hazard Detect AI | Hazardous Waste Detection
+    </title>
+
+    <meta
+        name="description"
+        content="AI-powered hazardous waste detection using YOLOv8"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+
+        <!-- LOGO -->
+
+        <a
+            href="/"
+            class="logo"
+        >
+
+            <div class="logo-icon">
+                ◉
+            </div>
+
+            <div class="logo-text">
+
+                <span class="logo-main">
+                    Hazard<span>Detect</span> AI
+                </span>
+
+                <span class="logo-sub">
+                    Smart Waste. Safe Future.
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <div class="nav-links">
+
+            <a
+                href="#home"
+                class="active"
+            >
+                Home
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#models">
+                Models
+            </a>
+
+            <a href="/comparison">
+                Comparison
+            </a>
+
+        </div>
+
+
+        <!-- LAUNCH BUTTON -->
+
+        <a
+            href="#detector"
+            class="nav-button"
+        >
+
+            Launch Detection
+
+            <span>→</span>
+
+        </a>
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<section
+    id="home"
+    class="hero"
+>
+
+
+    <div class="hero-container">
+
+
+        <!-- LEFT CONTENT -->
+
+        <div class="hero-content">
+
+
+            <div class="eyebrow">
+
+                <span class="pulse-dot"></span>
+
+                AI POWERED DETECTION
+
+            </div>
+
+
+            <h1>
+
+                AI-Based
+
+                <span>
+                    Hazard Waste
+                </span>
+
+                Detection
+
+            </h1>
+
+
+            <h2>
+                Detect. Classify. Protect.
+            </h2>
+
+
+            <p class="hero-description">
+
+                Advanced YOLOv8 computer vision models
+                detect hazardous waste objects from images
+                and live camera feeds in real-time.
+
+            </p>
+
+
+            <!-- HERO BUTTONS -->
+
+            <div class="hero-buttons">
+
+
+                <a
+                    href="#detector"
+                    class="primary-button"
+                >
+
+                    <span>▣</span>
+
+                    Try Live Detection
+
+                </a>
+
+
+                <a
+                    href="/comparison"
+                    class="secondary-button"
+                >
+
+                    <span>▥</span>
+
+                    Compare Models
+
+                </a>
+
+
+            </div>
+
+
+            <!-- FEATURES -->
+
+            <div class="hero-features">
+
+                <div>
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    High Accuracy
+
+                </div>
+
+
+                <div>
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Real-time Detection
+
+                </div>
+
+
+                <div>
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Fast Inference
+
+                </div>
+
+
+                <div>
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Web Ready
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT HERO VISUAL -->
+
+        <div class="hero-visual">
+
+
+            <div class="visual-glow"></div>
+
+
+            <div class="hazard-image">
+
+                <div class="barrel barrel-one">
+
+                    <span>
+                        ⚠
+                    </span>
+
+                    HAZARD
+
+                </div>
+
+
+                <div class="barrel barrel-two">
+
+                    <span>
+                        ☢
+                    </span>
+
+                    HAZARDOUS
+
+                </div>
+
+
+                <div class="barrel barrel-three">
+
+                    <span>
+                        ⚠
+                    </span>
+
+                    WASTE
+
+                </div>
+
+
+                <div class="scan-line"></div>
+
+
+                <div class="ai-label">
+
+                    <span class="ai-dot"></span>
+
+                    AI VISION ACTIVE
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     METRICS
+===================================================== -->
+
+<section class="metrics-section">
+
+    <div class="metrics-container">
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                ◎
+            </div>
+
+            <div>
+
+                <strong>
+                    94.38%
+                </strong>
+
+                <span>
+                    Precision
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                ↗
+            </div>
+
+            <div>
+
+                <strong>
+                    97.39%
+                </strong>
+
+                <span>
+                    mAP@50
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <strong>
+                    84.88%
+                </strong>
+
+                <span>
+                    mAP@50-95
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                ◉
+            </div>
+
+            <div>
+
+                <strong>
+                    2
+                </strong>
+
+                <span>
+                    Hazard Classes
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DETECTOR SECTION
+===================================================== -->
+
+<section
+    id="detector"
+    class="detector-section"
+>
+
+
+    <div class="section-heading">
+
+        <span>
+            LIVE AI DETECTION
+        </span>
+
+        <h2>
+            Detect Hazardous Waste
+        </h2>
+
+        <p>
+            Upload an image or use your webcam
+            to detect hazardous waste using YOLOv8n.
+        </p>
+
+    </div>
+
+
+
+    <div class="detector-container">
+
+
+        <!-- INPUT -->
+
+        <div class="detector-card">
+
+
+            <div class="card-title">
+
+                <div>
+
+                    <span class="small-label">
+                        MAIN MODEL
+                    </span>
+
+                    <h3>
+                        YOLOv8n
+                    </h3>
+
+                </div>
+
+
+                <span class="model-status">
+
+                    ● ONLINE
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="detector-actions">
+
+
+                <label
+                    for="imageInput"
+                    class="detect-button"
+                >
+
+                    📁 Upload Image
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    hidden
+                >
+
+
+                <button
+                    id="startCamera"
+                    class="detect-button"
+                >
+
+                    📷 Start Webcam
+
+                </button>
+
+
+                <button
+                    id="stopCamera"
+                    class="detect-button dark-button"
+                >
+
+                    ■ Stop
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- CAMERA -->
+
+            <div class="camera-wrapper">
+
+                <video
+                    id="video"
+                    autoplay
+                    playsinline
+                ></video>
+
+
+                <div
+                    id="cameraMessage"
+                    class="camera-message"
+                >
+
+                    <div class="camera-icon">
+                        ◉
+                    </div>
+
+                    <p>
+                        Camera not started
+                    </p>
+
+                    <span>
+                        Click "Start Webcam"
+                        to begin detection
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <canvas
+                id="canvas"
+                hidden
+            ></canvas>
+
+
+        </div>
+
+
+
+        <!-- RESULT -->
+
+        <div class="result-card">
+
+
+            <div class="card-title">
+
+                <div>
+
+                    <span class="small-label">
+                        DETECTION OUTPUT
+                    </span>
+
+                    <h3>
+                        AI Results
+                    </h3>
+
+                </div>
+
+
+                <span class="live-status">
+
+                    ● LIVE
+
+                </span>
+
+            </div>
+
+
+            <div id="result">
+
+                <div class="result-placeholder">
+
+                    <div class="result-icon">
+                        ◇
+                    </div>
+
+                    <h4>
+                        Waiting for Detection
+                    </h4>
+
+                    <p>
+                        Upload an image or start the
+                        webcam to see AI detection results.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section
+    id="how-it-works"
+    class="how-section"
+>
+
+
+    <div class="section-heading">
+
+        <span>
+            HOW IT WORKS
+        </span>
+
+        <h2>
+            Simple. Powerful. Intelligent.
+        </h2>
+
+        <p>
+            Our AI system makes hazardous waste
+            detection simple and efficient.
+        </p>
+
+    </div>
+
+
+
+    <div class="steps-container">
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <div class="step-icon">
+                ▧
+            </div>
+
+            <h3>
+                Upload or Capture
+            </h3>
+
+            <p>
+                Upload an image or use the live
+                camera to capture hazardous waste.
+            </p>
+
+        </div>
+
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <div class="step-icon">
+                ◉
+            </div>
+
+            <h3>
+                AI Detection
+            </h3>
+
+            <p>
+                YOLOv8 detects and classifies
+                hazardous waste objects.
+            </p>
+
+        </div>
+
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <div class="step-icon">
+                ↗
+            </div>
+
+            <h3>
+                Results & Confidence
+            </h3>
+
+            <p>
+                View detected objects, confidence
+                scores and inference time.
+            </p>
+
+        </div>
+
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                04
+            </div>
+
+            <div class="step-icon">
+                ✓
+            </div>
+
+            <h3>
+                Take Action
+            </h3>
+
+            <p>
+                Use the detection result to support
+                safer waste identification.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     MODELS
+===================================================== -->
+
+<section
+    id="models"
+    class="models-section"
+>
+
+
+    <div class="section-heading">
+
+        <span>
+            COMPUTER VISION
+        </span>
+
+        <h2>
+            Built with YOLOv8
+        </h2>
+
+        <p>
+            Fast object detection designed for
+            hazardous waste identification.
+        </p>
+
+    </div>
+
+
+
+    <div class="model-cards">
+
+
+        <div class="model-card main-model">
+
+            <span class="model-tag">
+                MAIN MODEL
+            </span>
+
+            <h3>
+                YOLOv8n
+            </h3>
+
+            <p>
+                Optimized for fast real-time
+                hazardous waste detection.
+            </p>
+
+            <div class="model-stats">
+
+                <div>
+                    <strong>
+                        94.38%
+                    </strong>
+
+                    <span>
+                        Precision
+                    </span>
+                </div>
+
+
+                <div>
+                    <strong>
+                        97.39%
+                    </strong>
+
+                    <span>
+                        mAP@50
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="model-card">
+
+            <span class="model-tag gray">
+                COMPARISON MODEL
+            </span>
+
+            <h3>
+                YOLOv8s
+            </h3>
+
+            <p>
+                Secondary model available for
+                accuracy and speed comparison.
+            </p>
+
+            <a href="/comparison">
+                Compare YOLOv8n vs YOLOv8s →
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-container">
+
+
+        <div>
+
+            <div class="footer-logo">
+                Hazard<span>Detect</span> AI
+            </div>
+
+            <p>
+                AI-powered hazardous waste detection
+                for a smarter and safer future.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="/comparison">
+                Model Comparison
+            </a>
+
+            <a href="#detector">
+                Detection
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 Hazard Detect AI.
+        YOLOv8 Hazardous Waste Detection System.
+
+    </div>
+
+</footer>
+
+
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+
+</body>
+
+</html>
