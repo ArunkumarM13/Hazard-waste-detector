@@ -101,18 +101,35 @@ async function sendImage(
             );
 
 
-        const data =
-            await response.json();
+ const responseText =
+    await response.text();
+
+let data = {};
+
+try {
+
+    data = responseText
+        ? JSON.parse(responseText)
+        : {};
+
+} catch (error) {
+
+    console.error(
+        "Invalid JSON response:",
+        responseText
+    );
+
+}
 
 
-        if (!response.ok) {
+if (!response.ok) {
 
-            throw new Error(
-                data.error ||
-                "Prediction failed"
-            );
+    throw new Error(
+        data.error ||
+        `Server error: ${response.status} ${response.statusText}`
+    );
 
-        }
+}
 
 
         const requestTime =
