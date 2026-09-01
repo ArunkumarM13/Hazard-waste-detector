@@ -1,5 +1,6 @@
 import base64
 import io
+import traceback
 
 from flask import (
     Flask,
@@ -18,23 +19,36 @@ from src.detector import predict
 app = Flask(__name__)
 
 
-# Maximum upload size
-app.config[
-    "MAX_CONTENT_LENGTH"
-] = (
-    MAX_UPLOAD_MB
-    * 1024
-    * 1024
+# ==================================================
+# MAX UPLOAD SIZE
+# ==================================================
+
+app.config["MAX_CONTENT_LENGTH"] = (
+    MAX_UPLOAD_MB * 1024 * 1024
 )
 
 
-# Load YOLO models
+# ==================================================
+# LOAD MODEL MANAGER
+# ==================================================
+
+print("========================================")
+print("Starting Hazard Waste Detector")
+print("========================================")
+
 model_manager = ModelManager()
 
+print("Model manager initialized")
 
-# --------------------------------------------------
-# MAIN DASHBOARD
-# --------------------------------------------------
+print(
+    "Available models:",
+    model_manager.available_models()
+)
+
+
+# ==================================================
+# HOME
+# ==================================================
 
 @app.route("/")
 def home():
@@ -44,9 +58,9 @@ def home():
     )
 
 
-# --------------------------------------------------
-# MODEL COMPARISON PAGE
-# --------------------------------------------------
+# ==================================================
+# COMPARISON PAGE
+# ==================================================
 
 @app.route("/comparison")
 def comparison():
@@ -56,27 +70,49 @@ def comparison():
     )
 
 
-# --------------------------------------------------
+# ==================================================
 # AVAILABLE MODELS
-# --------------------------------------------------
+# ==================================================
 
 @app.route("/api/models")
 def available_models():
 
-    return jsonify({
+    try:
 
-        "models":
-            model_manager.available_models()
+        return jsonify({
 
-    })
+            "models":
+                model_manager.available_models()
+
+        })
+
+    except Exception as error:
+
+        print("MODEL LIST ERROR:")
+        print(error)
+
+        return jsonify({
+
+            "error":
+                str(error)
+
+        }), 500
 
 
-# --------------------------------------------------
+# ==================================================
 # DECODE IMAGE
-# --------------------------------------------------
+# ==================================================
 
 def decode_image(data_url):
 
+    if not data_url:
+
+        raise ValueError(
+            "Image data is empty"
+        )
+
+
+    # Remove Base64 header
     if "," in data_url:
 
         data_url = data_url.split(
@@ -85,21 +121,47 @@ def decode_image(data_url):
         )[1]
 
 
-    raw = base64.b64decode(
-        data_url
-    )
+    try:
+
+        raw = base64.b64decode(
+            data_url
+        )
+
+    except Exception as error:
+
+        raise ValueError(
+            "Invalid Base64 image"
+        ) from error
 
 
-    return Image.open(
-        io.BytesIO(raw)
-    ).convert("RGB")
+    try:
+
+        image = Image.open(
+            io.BytesIO(raw)
+        ).convert("RGB")
+
+    except Exception as error:
+
+        raise ValueError(
+            "Invalid image file"
+        ) from error
 
 
-# --------------------------------------------------
+    return image
+
+
+# ==================================================
 # PREPARE RESPONSE
-# --------------------------------------------------
+# ==================================================
 
 def prepare_response(output):
+
+    if "annotated_image" not in output:
+
+        raise ValueError(
+            "Prediction output does not contain annotated_image"
+        )
+
 
     image = Image.fromarray(
         output["annotated_image"]
@@ -112,7 +174,8 @@ def prepare_response(output):
     image.save(
         buffer,
         format="JPEG",
-        quality=90
+        quality=85,
+        optimize=True
     )
 
 
@@ -124,23 +187,33 @@ def prepare_response(output):
     return {
 
         "detections":
-            output["detections"],
+            output.get(
+                "detections",
+                []
+            ),
 
         "count":
-            output["count"],
+            output.get(
+                "count",
+                0
+            ),
 
         "inference_time":
-            output["inference_time"],
+            output.get(
+                "inference_time",
+                0
+            ),
 
         "image":
             "data:image/jpeg;base64,"
             + encoded
+
     }
 
 
-# --------------------------------------------------
+# ==================================================
 # PREDICTION API
-# --------------------------------------------------
+# ==================================================
 
 @app.route(
     "/api/predict",
@@ -148,62 +221,195 @@ def prepare_response(output):
 )
 def predict_api():
 
-    data = request.get_json(
-        silent=True
-    ) or {}
-
-
-    model_name = data.get(
-        "model",
-        "yolov8n"
-    )
-
-
-    image_data = data.get(
-        "image"
-    )
-
-
-    if not image_data:
-
-        return jsonify({
-
-            "error":
-                "Image is required"
-
-        }), 400
+    print("")
+    print("========================================")
+    print("PREDICTION REQUEST RECEIVED")
+    print("========================================")
 
 
     try:
 
-        # Get selected model
+        # ------------------------------------------
+        # READ JSON
+        # ------------------------------------------
+
+        data = request.get_json(
+            silent=True
+        )
+
+
+        if not data:
+
+            print("ERROR: No JSON data")
+
+            return jsonify({
+
+                "error":
+                    "No JSON data received"
+
+            }), 400
+
+
+        # ------------------------------------------
+        # GET MODEL
+        # ------------------------------------------
+
+        model_name = data.get(
+            "model",
+            "yolov8n"
+        )
+
+
+        print(
+            "Requested model:",
+            model_name
+        )
+
+
+        # ------------------------------------------
+        # GET IMAGE
+        # ------------------------------------------
+
+        image_data = data.get(
+            "image"
+        )
+
+
+        if not image_data:
+
+            print("ERROR: Image missing")
+
+            return jsonify({
+
+                "error":
+                    "Image is required"
+
+            }), 400
+
+
+        print(
+            "Image data received"
+        )
+
+
+        # ------------------------------------------
+        # LOAD MODEL
+        # ------------------------------------------
+
+        print(
+            "Getting model..."
+        )
+
+
         model = model_manager.get(
             model_name
         )
 
 
-        # Convert image
+        print(
+            "Model obtained successfully"
+        )
+
+
+        # ------------------------------------------
+        # DECODE IMAGE
+        # ------------------------------------------
+
+        print(
+            "Decoding image..."
+        )
+
+
         image = decode_image(
             image_data
         )
 
 
-        # Run YOLO
+        print(
+            "Image size:",
+            image.size
+        )
+
+
+        # ------------------------------------------
+        # RUN YOLO
+        # ------------------------------------------
+
+        print(
+            "Starting YOLO prediction..."
+        )
+
+
         output = predict(
             model,
             image
         )
 
 
-        # Send result
-        return jsonify(
-            prepare_response(
-                output
-            )
+        print(
+            "YOLO prediction completed"
         )
 
 
+        # ------------------------------------------
+        # PREPARE RESPONSE
+        # ------------------------------------------
+
+        print(
+            "Preparing response..."
+        )
+
+
+        response_data = prepare_response(
+            output
+        )
+
+
+        print(
+            "Response prepared successfully"
+        )
+
+
+        print(
+            "Detected objects:",
+            response_data["count"]
+        )
+
+
+        print(
+            "========================================"
+        )
+        print(
+            "PREDICTION SUCCESS"
+        )
+        print(
+            "========================================"
+        )
+
+
+        return jsonify(
+            response_data
+        ), 200
+
+
     except Exception as error:
+
+        print("")
+        print("========================================")
+        print("PREDICTION ERROR")
+        print("========================================")
+
+        print(
+            "Error:",
+            str(error)
+        )
+
+        traceback.print_exc()
+
+        print(
+            "========================================"
+        )
+
 
         return jsonify({
 
@@ -213,27 +419,47 @@ def predict_api():
         }), 500
 
 
-# --------------------------------------------------
+# ==================================================
 # HEALTH CHECK
-# --------------------------------------------------
+# ==================================================
 
 @app.route("/health")
 def health():
 
-    return jsonify({
+    try:
 
-        "status":
-            "healthy",
-
-        "models":
+        models = (
             model_manager.available_models()
+        )
 
-    })
+
+        return jsonify({
+
+            "status":
+                "healthy",
+
+            "models":
+                models
+
+        }), 200
 
 
-# --------------------------------------------------
-# RUN APPLICATION
-# --------------------------------------------------
+    except Exception as error:
+
+        return jsonify({
+
+            "status":
+                "error",
+
+            "error":
+                str(error)
+
+        }), 500
+
+
+# ==================================================
+# RUN LOCALLY
+# ==================================================
 
 if __name__ == "__main__":
 
