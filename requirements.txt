@@ -1,6 +1,7 @@
 flask
 gunicorn
 ultralytics
+huggingface_hub
 opencv-python-headless
 numpy
 Pillow
