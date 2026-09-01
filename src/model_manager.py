@@ -20,16 +20,6 @@ class ModelManager:
             YOLOV8N_PATH
         )
 
-        # Load YOLOv8s only if available
-        if os.path.exists(
-            YOLOV8S_PATH
-        ):
-
-            self.load_model(
-                "yolov8s",
-                YOLOV8S_PATH
-            )
-
     def load_model(
         self,
         name,
