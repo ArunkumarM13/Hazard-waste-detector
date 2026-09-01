@@ -1,8 +1,9 @@
-flask
-gunicorn
-ultralytics
-huggingface_hub
-opencv-python-headless
-numpy
-Pillow
-python-dotenv
+Flask==3.1.2
+gunicorn==23.0.0
+ultralytics==8.4.130
+torch==2.6.0
+torchvision==0.21.0
+numpy==1.26.4
+Pillow==11.3.0
+opencv-python-headless==4.11.0.86
+python-dotenv==1.1.1

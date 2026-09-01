@@ -1,1 +1,6 @@
-startCommand: gunicorn --workers 1 --threads 1 --timeout 120 app:app
+services:
+  - type: web
+    name: hazard-waste-detector
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --workers 1 --threads 1 --timeout 120 app:app
